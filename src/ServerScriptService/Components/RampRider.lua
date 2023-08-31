@@ -99,7 +99,7 @@ function RampRider:_Init()
     local RiderPos = self:GetPosition()
     self.Instance = assets.rider:Clone()
     self.Instance.Position = RiderPos
-    self.Instance.Parent = workspace
+    self.Instance.Parent = workspace.Balls
 
     self._trove:Add(self.Instance)
     self:BuildPhysics()
