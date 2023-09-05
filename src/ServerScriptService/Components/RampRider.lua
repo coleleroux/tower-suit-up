@@ -20,9 +20,11 @@ RampRider.Tag = "RampRider"
 function RampRider.new()
     local self = setmetatable({}, RampRider)
     self._trove = Trove.new()
-    self:_Init()
+    self:setup()
+
     return self
 end
+
 
 
 function RampRider:HarmPlayer(hit: Part)
@@ -95,7 +97,8 @@ end
 
 
 
-function RampRider:_Init()
+
+function RampRider:setup()
     local RiderPos = self:GetPosition()
     self.Instance = assets.rider:Clone()
     self.Instance.Position = RiderPos

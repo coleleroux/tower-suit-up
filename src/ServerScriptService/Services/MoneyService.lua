@@ -25,6 +25,8 @@ function MoneyService:AddMoney(player: Player, amount: number)
     self.MoneyPerPlayer[player] = money
     if amount ~= 0 then
         self.MoneyChanged:Fire(amount)
+        -- Fire the client signal:
+        self.Client.MoneyChanged:Fire(player, money)
     end
 
     return self.money
