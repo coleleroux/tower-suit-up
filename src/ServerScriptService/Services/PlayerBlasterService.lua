@@ -8,12 +8,38 @@ local Signal = require(ReplicatedStorage.Packages.Signal)
 local PlayerBlaster = require(ServerScriptService.Game.Components.PlayerBlaster)
 
 local PlayerBlasterService = Knit.CreateService {
-    Name = "BlasterService",
+    Name = "PlayerBlasterService",
     -- Define some properties:
+    Client = {
+        EquipEvent = Knit.CreateSignal(),
+    },
 }
 
 
 function PlayerBlasterService:KnitInit()
+    self:OnPlayerAdded()
+
+    self.Client.EquipEvent:Connect(function(player, gunName)
+		print("Got message from client event:", player, gunName)
+		self.Client.EquipEvent:Fire(player, gunName:lower())
+	end)
+
+end
+
+function PlayerBlasterService:KnitStart()
+    
+end
+
+
+function PlayerBlasterService.Client:TestMethod(player, msg)
+	print("TestMethod from client:", player, msg)
+	return msg:upper()
+end
+
+
+
+
+function PlayerBlasterService:OnPlayerAdded()
     Players.PlayerAdded:Connect(function(player:Player)
         local playerBlaster
         player.CharacterAdded:Connect(function()
@@ -27,8 +53,6 @@ function PlayerBlasterService:KnitInit()
     end)
 end
 
-function PlayerBlasterService:KnitStart()
-    
-end
+
 
 return PlayerBlasterService

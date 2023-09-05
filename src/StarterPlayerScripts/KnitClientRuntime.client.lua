@@ -1,7 +1,7 @@
 local Knit = require(game:GetService("ReplicatedStorage").Packages.Knit)
 
 -- Load all services:
-for _, v in script.Parent.Controllers:GetDescendants() do
+for _, v in script.Parent.Controllers:GetChildren() do
     if v:IsA("ModuleScript") then
         require(v)
     end
