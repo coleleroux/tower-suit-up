@@ -302,13 +302,16 @@ function PlayerBlaster:onRayHit(cast, raycastResult, segmentVelocity, cosmeticBu
 		end
 
         if hitPart:IsA("BasePart") and hitPart:IsDescendantOf(workspace.Balls) then
-            
+			if hitPart:GetAttribute("IsDestroying") then
+				return
+			end
             spr.target(hitPart, 0.9, 3, {Size = Vector3.new(0,0,0)})
             spr.completed(hitPart, function()
                 game:GetService("Debris"):AddItem(hitPart, 0)
             end)
 
             SoundService.world.balldestroy:Play()
+			hitPart:SetAttribute("IsDestroying", true)
         end
 		
 		self:MakeSplashParticleFX(hitPoint, normal)--//particle splash effects

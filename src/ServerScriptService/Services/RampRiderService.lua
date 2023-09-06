@@ -10,14 +10,16 @@ local RampRider = require(ServerScriptService.Game.Components.RampRider)
 local RampRiderService = Knit.CreateService {
     Name = "RampRiderService",
     -- Define some properties:
-    _timer = Timer.new(2)
+    _timer = Timer.new(3)
 }
 
 
 function RampRiderService:KnitInit()
     self._timer.Tick:Connect(function()
         print("Spawning in RampRider")
-        RampRider.new()
+        for i = 1, 6 do
+            RampRider.new()
+        end
     end)
     self._timer:Start()
 end

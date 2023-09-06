@@ -141,8 +141,6 @@ function BlasterController:update()
 		if gunFirePoint then
 			self.PlayerBlasterService.FireEvent:Fire({ PlayerCamera.Focus.Position, Mouse.Hit.Position })
 		end
-		print(self.gunFirePoint.WorldPosition, Mouse.Hit.Position)
-		print(self.gunFirePoint, gunFirePoint)
 		--! fakearmservice.Recoil:Fire(self.mouseIsDown and self.isAutomatic)
 		
 		-- if not self.stopsprint then
