@@ -18,6 +18,8 @@ local reflect = require(script.Parent.Parent.Modules.Reflect)
 local raypierce = require(script.Parent.Parent.Modules.RayPierce)
 
 
+local PointsService
+
 
 local DEBUG, PIERCE_DEMO = false, false
 local PART_CACHE_SIZE = 100
@@ -54,6 +56,8 @@ local 		constants = {
 function PlayerBlaster.new(playerObj)
     local self = setmetatable({ Player = playerObj }, PlayerBlaster)
     self._trove = Trove.new()
+
+	PointsService = Knit.GetService("PointsService")
 
     for index, value in constants do
 		self[index] = value
@@ -302,9 +306,13 @@ function PlayerBlaster:onRayHit(cast, raycastResult, segmentVelocity, cosmeticBu
 		end
 
         if hitPart:IsA("BasePart") and hitPart:IsDescendantOf(workspace.Balls) then
+			if PointsService then
+				PointsService:AddPoints(player, 1+(math.random(1,2)-1)*4)
+			end
 			if hitPart:GetAttribute("IsDestroying") then
 				return
 			end
+
             spr.target(hitPart, 0.9, 3, {Size = Vector3.new(0,0,0)})
             spr.completed(hitPart, function()
                 game:GetService("Debris"):AddItem(hitPart, 0)

@@ -6,7 +6,7 @@ local Trove = require(ReplicatedStorage.Packages.Trove)
 
 local PlayerGui = Knit.Player:WaitForChild("PlayerGui")
 local spr = require(script.Parent.Parent.Modules.spr)
-
+local MainUI =  PlayerGui:WaitForChild("MainUI")
 
 local Portal = workspace:WaitForChild("Portal")
 local TouchPart = Portal:WaitForChild("TouchPart")
@@ -61,9 +61,23 @@ function UIController:KnitStart()
         SoundService:WaitForChild("interface"):WaitForChild("MouseClick"):Play()
     end)
 
+
+
+    local PointsService = Knit.GetService("PointsService")
+    local pointsGui = MainUI:WaitForChild("points")
+    local pointsAmount = pointsGui:WaitForChild("amount")
+
+
+    PointsService:GetPoints():andThen(function(points)
+        pointsAmount.Text = `${points}`
+    end)
+
+
+
+    PointsService.PointsChanged:Connect(function(points)
+        pointsAmount.Text = `${points}`
+    end)
 end
-
-
 
 
 

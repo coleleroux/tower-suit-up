@@ -93,7 +93,6 @@ local LEFT_ARM_C1 = CFrame.new(0,0,0)*CFrame.Angles(0,math.rad(ARM_TILT_DEG/2),0
 local RIGHT_ARM_C1 = CFrame.new(0,0,0)*CFrame.Angles(0,math.rad(-ARM_TILT_DEG),0) --//C1 joint cframe offset
 
 function FakeArmsController:setup()
-	print("setting up now fakearmscontroller")
 	renderTrove:Clean()--//cleanup connections
 	self.state = "Show"
 	

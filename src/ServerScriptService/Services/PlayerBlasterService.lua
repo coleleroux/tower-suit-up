@@ -54,7 +54,6 @@ end
 
 
 function PlayerBlasterService.Client:TestMethod(player, msg)
-	print("TestMethod from client:", player, msg)
 	return msg:upper()
 end
 

@@ -48,7 +48,6 @@ function BlasterController:KnitStart()
 	end)
 	self.PlayerBlasterService.EquipEvent:Fire("TestBlaster")
 	self.PlayerBlasterService:TestMethod("Hello world from client"):andThen(function(result)
-		print("Result from server:", result)
 	end)
 
 

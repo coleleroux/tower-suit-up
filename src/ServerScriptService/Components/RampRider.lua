@@ -75,6 +75,11 @@ function RampRider:BuildPhysics()
     bodypos.Position = Vector3.new(endMiddle.Position.X,self.Instance.Position.Y,self.Instance.Position.Z)
     bodypos.MaxForce = Vector3.new(math.random(math.random(5,25),25), math.random(50,100), 0, self._Seed:NextNumber(-5,5))
 
+    local r = math.random(1,255)
+	local g = math.random(1,255)
+	local b = math.random(1,255)
+	self.Instance.Color = Color3.fromRGB(r, g, b)
+
     self.Instance.CanCollide = true
     self.Instance.CanTouch = true
     self.Instance.Anchored = false

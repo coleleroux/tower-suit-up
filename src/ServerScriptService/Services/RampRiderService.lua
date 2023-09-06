@@ -16,7 +16,6 @@ local RampRiderService = Knit.CreateService {
 
 function RampRiderService:KnitInit()
     self._timer.Tick:Connect(function()
-        print("Spawning in RampRider")
         for i = 1, 6 do
             RampRider.new()
         end

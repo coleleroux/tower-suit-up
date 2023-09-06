@@ -47,7 +47,6 @@ function PointsService:KnitInit()
     self.Client.GiveMePoints:Connect(function(player)
         local points = rng:NextInteger(0, 10)
         self:AddPoints(player, points)
-        print("Gave " .. player.Name .. " " .. points .. " points")
     end)
 
     -- Clean up data when player leaves:
