@@ -11,6 +11,7 @@ local PlayerBlaster = require(ServerScriptService.Game.Components.PlayerBlaster)
 
 local PlayerBlasterService = Knit.CreateService {
     Name = "PlayerBlasterService",
+    PlayerSessions = {},
     -- Define some properties:
     Client = {
         EquipEvent = Knit.CreateSignal(),
@@ -23,13 +24,27 @@ local PlayerBlasterService = Knit.CreateService {
 
 
 function PlayerBlasterService:KnitInit()
-    self:OnPlayerAdded()
-
     self.Client.EquipEvent:Connect(function(player, gunName)
-		print("Got message from client event:", player, gunName)
-		self.Client.EquipEvent:Fire(player, gunName:lower())
+        local playerBlaster = self.PlayerSessions[player]
+        if playerBlaster then
+            playerBlaster:Destroy()
+        end
+        playerBlaster = PlayerBlaster.new(player)
+        playerBlaster:NewModel()
+        
+        self.PlayerSessions[player] = playerBlaster
+
+        self.Client.EquipEvent:Fire(player, gunName:lower())
 	end)
 
+
+    self.Client.FireEvent:Connect(function(player, args)
+        if not self.PlayerSessions[player] then return warn("no player blaster session found for", player) end
+        if type(args)~="table" then return warn("invalid arguments for blaster event") end
+        
+
+        return self.PlayerSessions[player]:EventFireGun(args)
+    end)
 end
 
 function PlayerBlasterService:KnitStart()
@@ -48,14 +63,14 @@ end
 function PlayerBlasterService:OnPlayerAdded()
     Players.PlayerAdded:Connect(function(player:Player)
         local playerBlaster
-        player.CharacterAdded:Connect(function()
-            if playerBlaster then
-                playerBlaster:Destroy()
-            end
-
-            playerBlaster = PlayerBlaster.new(player)
-            playerBlaster:NewModel()
-        end)
+        -- player.CharacterAdded:Connect(function()
+        -- if playerBlaster then
+        --     playerBlaster:Destroy()
+        -- end
+        playerBlaster = PlayerBlaster.new(player)
+        playerBlaster:NewModel()
+        self.PlayerSessions[player] = playerBlaster
+        -- end)
     end)
 end
 
