@@ -1,8 +1,10 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Players = game:GetService("Players")
+local SoundService = game:GetService("SoundService")
 
 local Knit = require(ReplicatedStorage.Packages.Knit)
 local Trove = require(ReplicatedStorage.Packages.Trove)
+local spr = require(script.Parent.Parent.Modules.spr)
 
 local assets = ReplicatedStorage.Game.assets
 local vfx = assets:FindFirstChild("vfx")
@@ -39,7 +41,7 @@ sessions.container = {}
 
 local 		constants = {
     BULLET_SPEED = 200;
-    BULLET_MAXDIST = 1000;
+    BULLET_MAXDIST = 300;
     BULLET_GRAVITY = Vector3.new(0, workspace.Gravity^0.70*-1, 0),
     MIN_BULLET_SPREAD_ANGLE = 0;
     MAX_BULLET_SPREAD_ANGLE = 0;
@@ -59,7 +61,6 @@ function PlayerBlaster.new(playerObj)
 
     return self
 end
-
 
 
 
@@ -176,13 +177,15 @@ function PlayerBlaster:MakeSplashParticleFX(position, normal)
 	
 	splashPartFX.Parent = cosmeticsBulletsFolder
 	
+    task.wait()
+
 	for index, value in pairs(splashPartFX:GetDescendants()) do
 		if value:IsA("ParticleEmitter") then
 			value.Enabled = false
 			value:Emit(rateofemit)
 		end
 	end
-	game:GetService("Debris"):AddItem(splashPartFX, 1) -- Automatically delete the particle effect after its maximum lifetime.
+	game:GetService("Debris"):AddItem(splashPartFX, 100) -- Automatically delete the particle effect after its maximum lifetime.
 end
 
 
@@ -252,9 +255,8 @@ function PlayerBlaster:EventFireGun(args)
     if not plrSession then return end
     
     local pointWorldPos, mousePoint = unpack(args)
-    
+		
     if not pointWorldPos or not mousePoint then return end
-
     if not plrSession.canFire then return end
     plrSession.canFire = false
     
@@ -262,8 +264,7 @@ function PlayerBlaster:EventFireGun(args)
     for i = 1, plrSession.BULLETS_PER_SHOT do
         self:fireGun(self.Player, pointWorldPos, mouseDirection)
     end
-
-    if plrSession.FIRE_DELAY > 0.03 then task.wait(plrSession.FIRE_DELAY) end
+    if plrSession.FIRE_DELAY > 0.03 then wait(plrSession.FIRE_DELAY) end
     plrSession.canFire = true
 end
 
@@ -297,10 +298,20 @@ function PlayerBlaster:onRayHit(cast, raycastResult, segmentVelocity, cosmeticBu
 		local humanoid = hitPart.Parent:FindFirstChildOfClass("Humanoid") -- Is there a humanoid?
 		if humanoid then
 			--humanoid:TakeDamage(humanoid.MaxHealth) -- Damage.
-			humanoid.Health = 0--//instant-kill
+			-- humanoid.Health = 0--//instant-kill
 		end
+
+        if hitPart:IsA("BasePart") and hitPart:IsDescendantOf(workspace.Balls) then
+            
+            spr.target(hitPart, 0.9, 3, {Size = Vector3.new(0,0,0)})
+            spr.completed(hitPart, function()
+                game:GetService("Debris"):AddItem(hitPart, 0)
+            end)
+
+            SoundService.world.balldestroy:Play()
+        end
 		
-		-- self:MakeSplashParticleFX(hitPoint, normal)--//particle splash effects
+		self:MakeSplashParticleFX(hitPoint, normal)--//particle splash effects
 		
 		local humanoidRootPart = player.Character and player.Character:FindFirstChild("HumanoidRootPart")
 		if humanoidRootPart then

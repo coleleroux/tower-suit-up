@@ -21,8 +21,6 @@ local PlayerBlasterService = Knit.CreateService {
 
 
 
-
-
 function PlayerBlasterService:KnitInit()
     self.Client.EquipEvent:Connect(function(player, gunName)
         local playerBlaster = self.PlayerSessions[player]
@@ -31,7 +29,7 @@ function PlayerBlasterService:KnitInit()
         end
         playerBlaster = PlayerBlaster.new(player)
         playerBlaster:NewModel()
-        
+
         self.PlayerSessions[player] = playerBlaster
 
         self.Client.EquipEvent:Fire(player, gunName:lower())
@@ -47,16 +45,18 @@ function PlayerBlasterService:KnitInit()
     end)
 end
 
+
+
 function PlayerBlasterService:KnitStart()
     
 end
+
 
 
 function PlayerBlasterService.Client:TestMethod(player, msg)
 	print("TestMethod from client:", player, msg)
 	return msg:upper()
 end
-
 
 
 
