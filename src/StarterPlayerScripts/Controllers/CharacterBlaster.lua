@@ -37,7 +37,6 @@ function BlasterController:KnitStart()
 	self.expectingInput = false
 	self.state = "none" --// states; "none", idle", "walk", "sprint"
 
-
 	self:setup()
 
 

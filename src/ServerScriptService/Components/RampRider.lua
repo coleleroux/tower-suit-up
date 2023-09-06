@@ -2,7 +2,7 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Players = game:GetService("Players")
 local assets = ReplicatedStorage.Game.assets
 
-local ramp = workspace.ramp
+local rampway = workspace.rampway
 
 local Knit = require(ReplicatedStorage.Packages.Knit)
 local Trove = require(ReplicatedStorage.Packages.Trove)
@@ -46,9 +46,9 @@ end
 
 
 function RampRider:GetPosition()
-    local topRight = ramp:FindFirstChild("top-right")
-    local topLeft = ramp:FindFirstChild("top-left")
-    local topMiddle = ramp:FindFirstChild("top-middle")
+    local topRight = rampway:FindFirstChild("top-right")
+    local topLeft = rampway:FindFirstChild("top-left")
+    local topMiddle = rampway:FindFirstChild("top-middle")
 
     local x = math.random(topRight.Position.X, topLeft.Position.X)
     local y = assets.rider.Position.Y
@@ -60,7 +60,7 @@ end
 
 
 function RampRider:BuildPhysics()
-    local endMiddle = ramp:FindFirstChild("end-middle")
+    local endMiddle = rampway:FindFirstChild("end-middle")
     if not self.Instance then return end
     local physics = assets.physics:Clone()
 

@@ -143,11 +143,15 @@ local RECOIL_DEG_MAX = 10.0 --//degrees for recoil rotation movement
 function FakeArmsController:render(step)
 	if self.state == "Show" then
 		if not Knit.Player.Character then return end
+		if not Knit.Player.Character:FindFirstChild("HumanoidRootPart") then
+			return
+		end
 		
 		armsModel.Parent = PlayerCamera
 		local fakearmsCamera = armsModel:WaitForChild("camera")
 		local psuedoHRP = armsModel:WaitForChild("root")
-		local plrRoot = Knit.Player.Character:WaitForChild("HumanoidRootPart")
+
+		local plrRoot = Knit.Player.Character:FindFirstChild("HumanoidRootPart")
 		local humanoid = Knit.Player.Character:WaitForChild("Humanoid")
 		--// walk/movement stuff
 		local isRecoiling = self.recoilState=="inuse"
