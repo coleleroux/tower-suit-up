@@ -7,13 +7,19 @@ local Signal = require(ReplicatedStorage.Packages.Signal)
 
 local PlayerBlaster = require(ServerScriptService.Game.Components.PlayerBlaster)
 
+
+
 local PlayerBlasterService = Knit.CreateService {
     Name = "PlayerBlasterService",
     -- Define some properties:
     Client = {
         EquipEvent = Knit.CreateSignal(),
+        FireEvent = Knit.CreateSignal(),
     },
 }
+
+
+
 
 
 function PlayerBlasterService:KnitInit()
